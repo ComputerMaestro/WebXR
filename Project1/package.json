@@ -1,0 +1,22 @@
+{
+  "name": "project1",
+  "version": "1.0.0",
+  "description": "three js practice project",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ComputerMaestro/WebXR.git"
+  },
+  "author": "Yash Patel",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ComputerMaestro/WebXR/issues"
+  },
+  "homepage": "https://github.com/ComputerMaestro/WebXR#readme",
+  "dependencies": {
+    "three": "^0.135.0"
+  }
+}
