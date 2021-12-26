@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Project1</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+    }
+  </style>
+</head>
+
+<body>
+  <script type="module">
+    import {
+      App
+    } from './js/index.js'
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const app = new App();
+      window.b = app;
+    });
+  </script>
+</body>
+
+</html>
