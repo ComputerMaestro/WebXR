@@ -34,14 +34,25 @@ class App {
     for (let i = 0; i < 10; i++) {
       points.push(new THREE.Vector2(Math.sin(i * 0.2) * 10 + 5, (i - 5) * 2));
     }
-    const geometry = new THREE.OctahedronGeometry();
-    const material = new THREE.MeshStandardMaterial({
+    const geometryOcta = new THREE.OctahedronGeometry();
+    const materialOcta = new THREE.MeshStandardMaterial({
       color: 0x34d8eb
     });
-    const cube = new THREE.Mesh(geometry, material);
-    this.scene.add(cube); // by default (0,0,0)
+    const octahedron = new THREE.Mesh(geometryOcta, materialOcta);
+    this.scene.add(octahedron); // by default (0,0,0)
+
+    const geometryCube = new THREE.BoxGeometry(2, 2, 2);
+    const materialCube = new THREE.MeshStandardMaterial({
+      color: 0xb324ab,
+      transparent: true,
+      opacity: 0.5
+    });
+
+    const cube = new THREE.Mesh(geometryCube, materialCube);
+    this.scene.add(cube);
 
     this.objects = {
+      octahedron: octahedron,
       cube: cube
     };
 
@@ -51,12 +62,16 @@ class App {
   }
 
   resize() {
-
+    this.camera.aspect = window.innerWidth/window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
 
   render() {
     requestAnimationFrame(this.render.bind(this));
 
+    this.objects.octahedron.rotation.x += -0.01;
+    this.objects.octahedron.rotation.y += -0.01;
     this.objects.cube.rotation.x += 0.01;
     this.objects.cube.rotation.y += 0.01;
 

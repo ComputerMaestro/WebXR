@@ -18,5 +18,9 @@
   "homepage": "https://github.com/ComputerMaestro/WebXR#readme",
   "dependencies": {
     "three": "^0.135.0"
+  },
+  "devDependencies": {
+    "gh-pages": "^3.2.3",
+    "grunt": "^1.4.1"
   }
 }
