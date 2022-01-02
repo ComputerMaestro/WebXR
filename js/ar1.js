@@ -42,15 +42,18 @@ class App {
             const geometryOcta = new THREE.OctahedronGeometry();
             const materialOcta = new THREE.MeshStandardMaterial({ color: 0x78e4fa });
             const octahedron = new THREE.Mesh(geometryOcta, materialOcta);
-            this.scene.add(octahedron); // by default (0,0,0)
+            octahedron.position.set(0, 0, -0.3).applyMatrix4(controller.matrixWorld);
+            octahedron.quaternion.setFromRotationMatrix(controller.matrixWorld);
+            self.scene.add(octahedron); // by default (0,0,0)
 
-            this.objects.octahedron = octahedron;
+            self.objects.octahedron = octahedron;
         }
 
         const ARButton = new XRButton(this.renderer);
 
         controller = this.renderer.xr.getController(0);
-        controller.addEventListener('select', onSelect, {once: true});
+        console.log(controller);
+        controller.addEventListener('select', onSelect);
         this.scene.add(controller);
 
         this.render();
@@ -58,8 +61,9 @@ class App {
 
     render(){
         requestAnimationFrame(this.render.bind(this));
-
+        console.log(this.objects);
         if(this.objects.octahedron) {
+            console.log("yes");
             this.objects.octahedron.rotation.x += -0.01;
             this.objects.octahedron.rotation.y += -0.01;
         }
