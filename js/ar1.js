@@ -26,28 +26,43 @@ class App {
 
         this.initializeScene();
         this.setupXR();
-        this.render();
     }
 
     initializeScene() {
-        const geometryOcta = new THREE.OctahedronGeometry();
-        const materialOcta = new THREE.MeshStandardMaterial({ color: 0x78e4fa });
-        const octahedron = new THREE.Mesh(geometryOcta, materialOcta);
-        this.scene.add(octahedron); // by default (0,0,0)
-
-        this.objects = { octahedron: octahedron };
+        this.objects = {};
     }
 
     setupXR(){
         this.renderer.xr.enabled = true;
+
+        const self = this;
+        let controller;
+
+        function onSelect() {
+            const geometryOcta = new THREE.OctahedronGeometry();
+            const materialOcta = new THREE.MeshStandardMaterial({ color: 0x78e4fa });
+            const octahedron = new THREE.Mesh(geometryOcta, materialOcta);
+            this.scene.add(octahedron); // by default (0,0,0)
+
+            this.objects.octahedron = octahedron;
+        }
+
         const ARButton = new XRButton(this.renderer);
+
+        controller = this.renderer.xr.getController(0);
+        controller.addEventListener('select', onSelect, {once: true});
+        this.scene.add(controller);
+
+        this.render();
     }
 
     render(){
         requestAnimationFrame(this.render.bind(this));
 
-        this.objects.octahedron.rotation.x += -0.01;
-        this.objects.octahedron.rotation.y += -0.01;
+        if(this.objects.octahedron) {
+            this.objects.octahedron.rotation.x += -0.01;
+            this.objects.octahedron.rotation.y += -0.01;
+        }
 
         this.renderer.render(this.scene, this.camera);
     }
