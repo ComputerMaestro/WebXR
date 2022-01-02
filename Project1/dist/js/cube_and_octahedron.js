@@ -1,4 +1,4 @@
-import * as THREE from '../node_modules/three/src/three.js';
+import * as THREE from 'https://cdn.skypack.dev/three@0.135.0';
 // import {
 //   OrbitControls
 // } from '../node_modules/three/examples/ksm/controls/OrbitControls.js';
