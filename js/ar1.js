@@ -7,19 +7,17 @@ class App {
         document.body.appendChild(container);
 
         this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-        this.camera.position.set(0,0,5);
 
         this.scene = new THREE.Scene();
-        this.scene.background = new THREE.Color('#aaaaaa');
 
-        const ambient = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 0.3);
+        const ambient = new THREE.HemisphereLight(0xffffff, 0xbbbbff);
         this.scene.add(ambient);
 
         const light = new THREE.DirectionalLight();
         light.position.set( 0.2, 1, 1);
         this.scene.add(light);
 
-        this.renderer = new THREE.WebGLRenderer();
+        this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         container.appendChild(this.renderer.domElement);
@@ -29,6 +27,8 @@ class App {
     }
 
     initializeScene() {
+        this.geometry = new THREE.OctahedronGeometry(0.06);
+        this.meshes = [];
         this.objects = {};
     }
 
@@ -39,14 +39,15 @@ class App {
         let controller;
 
         function onSelect() {
-            const geometryOcta = new THREE.OctahedronGeometry();
-            const materialOcta = new THREE.MeshStandardMaterial({ color: 0x78e4fa });
-            const octahedron = new THREE.Mesh(geometryOcta, materialOcta);
-            octahedron.position.set(0, 0, -0.3).applyMatrix4(controller.matrixWorld);
-            octahedron.quaternion.setFromRotationMatrix(controller.matrixWorld);
-            self.scene.add(octahedron); // by default (0,0,0)
+            const geoOcta = new THREE.OctahedronGeometry(0.06);
+            const material = new THREE.MeshPhongMaterial( { color: 0xffffff * Math.random() } );
+            const mesh = new THREE.Mesh( self.geometry, material );
+            mesh.position.set( 0, 0, - 0.3 ).applyMatrix4( controller.matrixWorld );
+            mesh.quaternion.setFromRotationMatrix( controller.matrixWorld );
+            self.scene.add( mesh );
+            self.meshes.push( mesh );
 
-            self.objects.octahedron = octahedron;
+            console.log(mesh);
         }
 
         const ARButton = new XRButton(this.renderer);
@@ -61,9 +62,7 @@ class App {
 
     render(){
         requestAnimationFrame(this.render.bind(this));
-        console.log(this.objects);
         if(this.objects.octahedron) {
-            console.log("yes");
             this.objects.octahedron.rotation.x += -0.01;
             this.objects.octahedron.rotation.y += -0.01;
         }
