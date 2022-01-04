@@ -118,6 +118,7 @@ class XRButton {
         element.style.background = (green) ? 'rgba(20, 150, 80, 1)' : 'rgba(180, 20, 20, 1)';
         element.style.transitionDuration = '300ms';
         element.style.transitionProperty = 'bottom, right, width, height, font-size';
+        element.style.zIndex = '99999';
     }
 
     moveButtonToCorner(button) {
