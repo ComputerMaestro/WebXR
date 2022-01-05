@@ -128,7 +128,7 @@ class XRButton {
         button.style.fontSize = '12px';
     }
 
-    moveButtonToCenter() {
+    moveButtonToCenter(button) {
         button.style.bottom = '50%';
         button.style.right = '50%';
         button.style.width = '200px';
