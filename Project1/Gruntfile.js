@@ -7,7 +7,7 @@ module.exports = function(grunt) {
         base: 'dist',
         repo: 'https://github.com/ComputerMaestro/WebXR.git'
       },
-      src: ['*.html', '**/*.js']
+      src: ['**/*']
     }
   });
 

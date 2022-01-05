@@ -1,0 +1,7 @@
+* {
+    box-sizing: border-box;
+}
+
+#demos {
+    display: grid;
+}
