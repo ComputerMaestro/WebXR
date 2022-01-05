@@ -1,5 +1,5 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.135.0';
-import {XRButton} from './XRButton.js';
+import { XRButton } from './XRButton.js';
 
 class App {
     constructor(){
@@ -20,6 +20,7 @@ class App {
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         this.renderer.setPixelRatio(window.devicePixelRatio);
         this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.xr.enabled = true;
         container.appendChild(this.renderer.domElement);
 
         this.initializeScene();
@@ -33,7 +34,6 @@ class App {
     }
 
     setupXR(){
-        this.renderer.xr.enabled = true;
 
         const self = this;
         let controller;
@@ -50,18 +50,17 @@ class App {
             console.log(mesh);
         }
 
-        const ARButton = new XRButton(this.renderer);
+        const btn = new XRButton(this.renderer);
 
         controller = this.renderer.xr.getController(0);
         console.log(controller);
-        controller.addEventListener('select', onSelect);
+        controller.addEventListener('select', onSelect, {once: true});
         this.scene.add(controller);
 
-        this.render();
+        this.renderer.setAnimationLoop( this.render.bind(this) );
     }
 
     render(){
-        requestAnimationFrame(this.render.bind(this));
         if(this.objects.octahedron) {
             this.objects.octahedron.rotation.x += -0.01;
             this.objects.octahedron.rotation.y += -0.01;
