@@ -1,29 +1,29 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+        <title>Project1</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Lato:wght@100&family=Open+Sans:wght@300&display=swap" rel="stylesheet">
+        <style>
+            body {
+                margin: 0;
+                padding: 0;
+                font-family: 'Lato', sans-serif;
+                font-family: 'Open Sans', sans-serif;
+            }
+        </style>
+    </head>
+    <body>
+        <script type="module">
+            import { App } from './js/ar1.js'
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-  <title>Project1</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-    }
-  </style>
-</head>
-
-<body>
-  <script type="module">
-    import {
-      App
-  } from './js/ar1.js'
-
-    document.addEventListener("DOMContentLoaded", function() {
-      const app = new App();
-      window.b = app;
-    });
-  </script>
-</body>
-
+            document.addEventListener("DOMContentLoaded", function() {
+                const app = new App();
+                window.b = app;
+            });
+        </script>
+    </body>
 </html>

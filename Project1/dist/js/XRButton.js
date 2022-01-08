@@ -57,6 +57,8 @@ class XRButton {
 
             currentSession = session;
 
+            self.moveButtonToCorner(button);
+
             if (self.onSessionStart !== undefined && self.onSessionStart !== null) self.onSessionStart();
         }
 
@@ -68,16 +70,16 @@ class XRButton {
 
             currentSession = null;
 
+            self.moveButtonToCenter(button);
+
             if (self.onSessionEnd !== undefined && self.onSessionEnd !== null) self.onSessionEnd();
         }
 
         button.onclick = function() {
             if(currentSession === null) {
                 navigator.xr.requestSession('immersive-ar').then(onSessionStarted);
-                self.moveButtonToCorner(button);
             } else {
                 currentSession.end();
-                self.moveButtonToCenter(button);
             }
         }
     }
@@ -109,16 +111,15 @@ class XRButton {
     stylizeElement(element, green=true) {
         element.style.position = 'absolute';
         element.style.bottom = '50%';
-        element.style.transform = 'translate(0, 50%)';
         element.style.right = '50%';
-        element.style.transform = 'translate(0, 50%)';
+        element.style.transform = 'translate(50%, 50%)';
         element.style.width = '200px';
-        element.style.borderRadius = '3px';
+        element.style.borderRadius = '10px';
         element.style.fontSize = '30px';
         element.style.background = (green) ? 'rgba(20, 150, 80, 1)' : 'rgba(180, 20, 20, 1)';
         element.style.transitionDuration = '300ms';
         element.style.transitionProperty = 'bottom, right, width, height, font-size';
-        element.style.zIndex = '999';
+        element.style.zIndex = '99999';
     }
 
     moveButtonToCorner(button) {
@@ -126,9 +127,10 @@ class XRButton {
         button.style.right = '20px';
         button.style.width = '80px';
         button.style.fontSize = '12px';
+        button.style.transform = 'translate(0, 0)'
     }
 
-    moveButtonToCenter() {
+    moveButtonToCenter(button) {
         button.style.bottom = '50%';
         button.style.right = '50%';
         button.style.width = '200px';
