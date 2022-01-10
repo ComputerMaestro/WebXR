@@ -30,7 +30,6 @@ class App {
     initializeScene() {
         this.geometry = new THREE.OctahedronGeometry(0.06);
         this.meshes = [];
-        this.objects = {};
     }
 
     setupXR(){
@@ -61,11 +60,6 @@ class App {
     }
 
     render(){
-        if(this.objects.octahedron) {
-            this.objects.octahedron.rotation.x += -0.01;
-            this.objects.octahedron.rotation.y += -0.01;
-        }
-
         this.renderer.render(this.scene, this.camera);
     }
 }
