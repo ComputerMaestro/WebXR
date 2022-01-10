@@ -2,8 +2,12 @@ import * as THREE from 'https://cdn.skypack.dev/three@0.135.0';
 
 
 class XRButton {
-    constructor(renderer, opton){
+    constructor(renderer, options){
         this.renderer = renderer;
+
+        if(options !== undefined) {
+            this.sessionInit = options;
+        }
 
         if('xr' in navigator) {
             const button = document.createElement('button');
@@ -77,7 +81,7 @@ class XRButton {
 
         button.onclick = function() {
             if(currentSession === null) {
-                navigator.xr.requestSession('immersive-ar').then(onSessionStarted);
+                navigator.xr.requestSession('immersive-ar', self.sessionInit).then(onSessionStarted);
             } else {
                 currentSession.end();
             }
