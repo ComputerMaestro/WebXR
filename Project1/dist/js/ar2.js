@@ -1,4 +1,7 @@
 import * as THREE from 'https://cdn.skypack.dev/three@0.135.0';
+import { OrbitControls } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.135.0/examples/jsm/loaders/GLTFLoader.js';
+import { LoadingBar } from './LoadingBar.js';
 import { XRButton } from './XRButton.js';
 
 class App {
@@ -23,6 +26,9 @@ class App {
         this.renderer.xr.enabled = true;
         container.appendChild(this.renderer.domElement);
 
+        this.loadingBar = new LoadingBar();
+        this.loadingBar.visible = false;
+
         this.initializeScene();
         this.setupXR();
     }
@@ -41,16 +47,48 @@ class App {
         this.scene.add(this.reticle);
     }
 
-    setupXR(){
-
+    loadGLTF() {
         const self = this;
+        const loader = new GLTFLoader().setPath('../dist/car_loader/');
+
+        loader.load(
+            'uploads_files_2792343_Koenigsegg.glb',
+            function(gltf) {
+                self.car = gltf.scene;
+                self.scene.add(gltf.scene);
+                self.loadingBar.visible = false;
+                self.car.position.setFromMatrixPosition(self.reticle.matrix);
+                self.car.scale.set(0.05, 0.05, 0.05);
+                console.log("Loaded");
+            },
+            function(xhr) {
+                self.loadingBar.progress = xhr.loaded/xhr.total;
+            },
+            function(err) {
+                console.log("An error occured");
+            }
+        )
+    }
+
+    setupXR(){
+        const self = this;
+        let controller;
 
         this.hitTestSourceRequested = false;
         this.hitTestSource = null;
 
+        function onSelect() {
+            self.loadingBar.visible = true;
+            self.loadGLTF();
+        }
+
         const btn = new XRButton(this.renderer, {requiredFeatures: ['hit-test']});
 
-        this.renderer.setAnimationLoop( self.render.bind(self) );
+        controller = this.renderer.xr.getController(0);
+        controller.addEventListener('select', onSelect, {once: true});
+        this.scene.add(controller);
+
+        self.renderer.setAnimationLoop(self.render.bind(self));
     }
 
     requestHitTestSource() {
@@ -81,7 +119,7 @@ class App {
     getHitTestResults(frame) {
         const hitTestResults = frame.getHitTestResults(this.hitTestSource);
 
-        if(hitTestResults.length) { // if lenght is more than zero
+        if(hitTestResults.length) { // if length is more than zero
             const referenceSpace = this.renderer.xr.getReferenceSpace();
             const hit =  hitTestResults[0]; // take only first hit test result
             const pose = hit.getPose(referenceSpace);   // get pose for the reference space
@@ -92,6 +130,7 @@ class App {
             // using Matrix4.fromArray here because the webgl matrix by default is an array (32 = length)
             // we need to convert it to THREE js array
             this.reticle.matrix.fromArray(pose.transform.matrix);
+            if(this.car) this.car.matrix.fromArray(pose.transform.matrix);
         } else {
             this.reticle.visible = false;
         }
